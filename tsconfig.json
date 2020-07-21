@@ -1,0 +1,29 @@
+{
+    "compilerOptions": {
+      "outDir": "lib",
+      "noImplicitAny": true,
+      "module": "commonjs",
+      "target": "es6",
+      "jsx": "react",
+      "moduleResolution": "Node",
+      "types": ["@citizenfx/server", "@citizenfx/client", "node", "reflect-metadata"],
+      "resolveJsonModule": true,
+      "sourceMap": true,
+      "lib": [
+        "dom",
+        "es5",
+        "scripthost",
+        "es2015.promise"
+      ],
+      "experimentalDecorators": true,
+      "emitDecoratorMetadata": true,
+      "declaration": true,
+      "paths": {
+          "*": ["types/*"]
+      },
+      "baseUrl": ".",
+    },
+    "include": ["src"],
+    "exclude": ["@citizenfx/server", "@citizenfx/client"]
+  }
+  
