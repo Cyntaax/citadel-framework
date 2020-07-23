@@ -1,15 +1,3 @@
-let LoadResourceFile: any
-let GetCurrentResourceName: any
-
-if (GetCurrentResourceName === undefined) {
-    GetCurrentResourceName = () => "test"
-}
-if (LoadResourceFile === undefined) {
-    LoadResourceFile = (resourceName: string, filename: string): string => {
-        return JSON.stringify({test: 'ff'})
-    }
-}
-
 export class Config<T extends ICitadelConfig = ICitadelConfig> {
     static defaultSpawn: {
         x: number,
@@ -28,7 +16,9 @@ export class Config<T extends ICitadelConfig = ICitadelConfig> {
         skin: any,
         clothing: any
     }
-    
+
+    static defaultIdentifier = "steam"
+
     static load() {
         const cfgstr = LoadResourceFile(GetCurrentResourceName(), "config.json")
         const jobj = JSON.parse(cfgstr)

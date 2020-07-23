@@ -51,6 +51,15 @@ bootstrap()
 
 ### Client-module
 ```typescript
+
+const allowJobs = (...jobs: string[]) => {
+    return function() {
+        for(const job of jobs) {
+            return false
+        }
+    }
+}
+
 @Module({
   // The name of the module for referencing elsewhere
   name: "other-module",
@@ -71,8 +80,19 @@ class Othermodule {
     console.log("Module init functionality. App is not ready yet")
   }
 
-  @Command("example", false)
-  exampleCommand(source: number, @Arg() hello: string, rest: any[]) {
+  /**
+   * restrictors: all functions must pass for command to be allowed
+   * @Arg(argname, options) - validator takes a function which the first parameter is the value of the arg. must pass
+   * argument type validation based on type annotation. i.e. hello: string must be a string. (string, number, boolean)
+   * default: default value for the function
+   */
+  @Command("example", {
+    restrictors: [allowJobs("police")]
+  })
+  exampleCommand(source: number, @Arg("hello", {
+    validator: (v: string) => v !== "hello",
+    default: "cheese"
+  }) hello: string, rest: any[]) {
     console.log(`You rand the example command, specified arg was ${hello}, rest of the args ${rest}`)
   }
 
@@ -81,8 +101,11 @@ class Othermodule {
     console.log(`This will run every frame! Woo!`)
   }
 
+  /**
+   * More on @MapSource soon. Essentiall does `ESX.GetPlayerFromId(id) and makes it available in the arg
+   * */
   @NetEvent("example:event")
-  exampleEvent() {
+  exampleEvent(@MapSource("module", "function")) {
     console.log(`Client Received an example event!`)
   }
 

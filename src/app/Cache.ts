@@ -4,4 +4,5 @@ export class Cache {
     static moduleCache: {[key: string]: any } = {}
     static ticks: { [key: string]: any } = {}
     static stores: { [key: string]: any } = {}
+    static models: { [key: string]: any } = {}
 }

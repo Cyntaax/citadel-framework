@@ -7,9 +7,11 @@ if (RegisterCommand === undefined) {
 
 
 
-export const Command = (commandName: string, restricted = false) => {
+export const Command = (commandName: string, options?: { restrictors?: any[] }) => {
     return (target: any, name: string, desc: PropertyDescriptor) => {
         const method = desc.value
+
+        options = options || {}
 
         desc.value = function(...args: any[]) {
             const res = method.apply(this, args)
@@ -26,7 +28,8 @@ export const Command = (commandName: string, restricted = false) => {
 
         commands.push({
             command: commandName,
-            handler: name
+            handler: name,
+            restrictors: options.restrictors
         })
     }
 }

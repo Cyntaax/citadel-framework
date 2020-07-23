@@ -1,6 +1,8 @@
 import { Cache } from './Cache'
+import { Wait } from '../util'
 
-export const bootstrap = () => {
+export const bootstrap = async () => {
+    console.log(`bootstrapping`)
     for(const [idx, mod] of Object.entries(Cache.modules)) {
         const tmod = new mod()
         /// @ts-ignore
@@ -24,6 +26,12 @@ export const bootstrap = () => {
 
     Cache.app = new Cache.app()
 
+    if(typeof Cache.app["$beforeReady"] === "function") {
+        while(Cache.app["$beforeReady"]() !== true) {
+            await Wait(1000)
+        }
+    }
+
     if(typeof Cache.app["$onReady"] === "function") {
         Cache.app["$onReady"]()
     }
@@ -33,4 +41,6 @@ export const bootstrap = () => {
             Cache.moduleCache[v]["$onReady"]()
         }
     })
+
+    console.log(`Bootstrap complete!`)
 }
