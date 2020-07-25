@@ -113,10 +113,27 @@ class Othermodule {
     console.log("On ready lifecycle hook")
   }
 }
+
+
+@Module({
+  name: 'other-module'
+})
+export class SvOtherModule {
+
+  @ServerCallback()
+  async someCallback(@MapSource("", "") player: PlayerClass) {
+    return "called back some data to client"
+  }
+
+  @Export()
+  someExportedFunction() {
+    console.log(`running exported function`)
+  }
+}
 ```
 
 ### TODO
-- [ ] Callback system
-- [ ] NUI event wrapper
+- [x] Callback system
+- ~~[ ] NUI event wrapper~~ No longer doing this due to the nature of the framework
 - [ ] Base system modules (player, character, clothes, vehicles etc)
-- [ ] Implement ORM?
+- [x] Implement ORM? (will be available in actual framework. typeorm works!)

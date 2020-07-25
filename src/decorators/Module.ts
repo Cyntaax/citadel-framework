@@ -19,19 +19,29 @@ export function Module(options: IModuleOptions) {
         const commands = Reflect.getOwnMetadata("commands", constructor.prototype) as any[] || []
 
         const argors = Reflect.getOwnMetadata("argors", constructor.prototype) as any || {}
-        
+
         const ticks = Reflect.getOwnMetadata("ticks", constructor.prototype) as any || {}
 
         const injectables = Reflect.getOwnMetadata("ijdecors", constructor.prototype) as any || {}
 
         const mapsourcer = Reflect.getOwnMetadata("mapsourcer", constructor.prototype) as any || {}
-        
+
+        const keys = Reflect.getOwnMetadata("keys", constructor.prototype) as unknown as any[] || []
+
+        const nuis = Reflect.getOwnMetadata("nuis", constructor.prototype) as unknown as {[key: string]: any} || {}
+
         let events = Reflect.getOwnMetadata("events", constructor.prototype) as any || {}
-        
+
+        let scb = Reflect.getOwnMetadata("scb", constructor.prototype) as unknown as {[key: string]: any} || {}
+
+        const http_gets = Reflect.getOwnMetadata("http_gets", constructor.prototype) as any[] || []
+
+        let exportz = Reflect.getOwnMetadata("exportz", constructor.prototype) as unknown as {[key: string]: any} || {}
+
         if(events === undefined) {
             Reflect.defineMetadata("events", {}, constructor.prototype)
         }
-        
+
         events = Reflect.getOwnMetadata("events", constructor.prototype) as any || {}
 
         const regevents = Reflect.getOwnMetadata("regevents", constructor.prototype) as any || {}
@@ -55,6 +65,30 @@ export function Module(options: IModuleOptions) {
             _depsToLoad: any = options.deps || []
             constructor(...args: any[]) {
                 super(...args)
+
+                keys.forEach((v: any) => {
+                    const ktick = setTick(() => {
+                        if(IsControlJustReleased(0, v.key)) {
+                            /// @ts-ignore
+                            this[v.methodName]()
+                        }
+                    })
+                })
+
+                Object.keys(nuis).forEach(v => {
+                    on(`__cfx_nui:${v}`, (data: any, cb: Function) => {
+                        /// @ts-ignore
+                        this[nuis[v.methodName]](data, cb)
+                    })
+                })
+
+                if(Cache.serverCallbacks[ident] === undefined) {
+                    Cache.serverCallbacks[ident] = {} as {[key: string]: any}
+                }
+
+                Object.keys(scb).forEach(v => {
+                    Cache.serverCallbacks[ident][v] = scb[v].methodName
+                })
 
                 commands.forEach(v => {
                     /// @ts-ignore
@@ -97,10 +131,26 @@ export function Module(options: IModuleOptions) {
                     })
                 })
 
+                Object.keys(exportz).forEach(v => {
+                    global.exports(`${ident}_${v}`, (...args: any[]) => {
+                        console.log(`all args ${JSON.stringify(args)}`)
+                        return "f33"
+                        /// @ts-ignore
+                        //const ret = await Promise.resolve(this[exportz[v].methodName](...args))
+                        //console.log(`epport ret ${ret }`)
+
+                    })
+                })
 
                 Object.keys(events).forEach(v => {
                     onNet(v, (...args: any[]) => {
-                        const _source = parseInt(global.source)
+                        let _source = parseInt(global.source)
+                        if(isNaN(_source)) {
+                            if(typeof args[0] === "number") {
+                                _source = args[0]
+                                args.splice(0, 1)
+                            }
+                        }
                         /// @ts-ignore
                         console.log(`map sourcer? ${source}`)
                         if(mapsourcer !== undefined) {
