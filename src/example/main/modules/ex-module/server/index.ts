@@ -9,7 +9,7 @@ class ExampleModule {
         
     }
 
-    @Command("excomm", false)
+    @Command("excomm")
     exampleCommand(source: number, @Arg() arg1: string, restArgs: any[]) {
         
     }

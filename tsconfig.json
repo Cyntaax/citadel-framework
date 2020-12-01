@@ -21,7 +21,7 @@
       "paths": {
           "*": ["types/*"]
       },
-      "baseUrl": ".",
+      "baseUrl": "."
     },
     "include": ["src"],
     "exclude": ["@citizenfx/server", "@citizenfx/client"]
